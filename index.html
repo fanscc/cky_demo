@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="css/css1.css" />
+		<script type="text/javascript" src="js/vue.js" ></script>
+	</head>
+	<body>
+		<div id= 'app'>
+			<h1>新增账号结构简介</h1>
+			<section>
+				<div class="maginauto" :style="{width:divwidth+'px'}" v-for='(p,index) in k' :class="{oddcolor:index%2==0,'eventcolor':index%2!=0}">
+				<article  class='conten' v-for="(item,index) in items"  v-if="index<p*num && index>=(p-1)*num">
+					<div :title="item.lsrc">
+					 {{item.view}}
+					</div>
+					<span v-if="index!==items.length-1" @click="parentview=index-0+1">{{item.dirction}}</span>
+				</article>
+				</div>
+				
+			</section>
+			
+			<div class="Alertcont" :class="'Alertcont'+index" v-if="parentview==index-0+1" v-for="(item,index) in contitems">
+				<h2>{{item.title}}</h2>
+			    <section class='centers'>
+			    <div v-if="childview==1" class="divimgcont" @click="childview=2">
+			    	   <img :src="item.imgsrc" /  class="imgcont">
+			    </div>
+ 				<div v-if="childview==2" @click="childview=1">
+ 					<p>{{item.cont}}</p>
+ 					 <img :src="items"  :class="'childimg'+index" v-for="(items,index) in item.chlidimgsrc" />
+ 					<p v-for="its in item.childarr">{{its.cont}}</p> 
+ 								
+ 				</div>
+				</section>
+				<i class="close" @click="parentview=-1;childview=1">x</i>
+			</div>
+			
+			<button id="defausflie" @click="deflusimg=true">点击查看默认文件</button>
+			<div id="defausflieimg" v-if="deflusimg==true" @click="deflusimg=false">
+			<img src='img/100.png'  />
+			
+			</div>
+		</div>
+						
+	</body>
+	<script>
+				
+		var Vm = new Vue({
+			el: '#app',
+			data:{
+				deflusimg:false,
+				parentview:0,
+				childview:1,
+				divwidth:0,
+				k:0,
+				num: 0,
+				items:[],
+				contitems:[]
+			},
+			methods:{
+			   rest:function(){
+			   	var green = document.body.clientWidth 
+				this.num = parseInt(green/302)				
+				this.divwidth = this.num*302-150
+			   	this.k =parseInt(this.items.length/this.num)+1
+			   }
+			},
+			
+			created: function(){
+				var green = document.body.clientWidth 
+				this.num = parseInt(green/302)				
+				this.divwidth = this.num*302-150
+				this.items = [
+				{"lsrc":"views/settings/channelAccount/details/index-page-view","view":"1、Talent.Layout","dirction":"this.accountInfoRegion.show()"},
+				{"lsrc":"views/settings/channelAccount/details/account-info-add-view","view":"2、Talent.Layout","dirction":"this.accountInfoForm.show()"},
+				{"lsrc":"views/common/exchannel/channel-form/channel-form-view","view":"3、Talent.Layout","dirction":"self.channelPicker.show()"},
+				{"lsrc":"views/common/exchannel/channel-form/channel-picker-view","view":"4、BaseFormView","dirction":"new StandardFormView()"},
+				{"lsrc":"views/common/exchannel/form/form-view","view":"5、CompositeView","dirction":"new Talent.Collection()"},
+				{"lsrc":"views/common/exchannel/form/field-item/field-item-view","view":"6、Talent.ItemView","dirction":"渲染出默认表单"},
+				{"lsrc":"","view":"7、出现默认的表单","dirction":"初始化完成"}
+				]
+				this.contitems = [
+				{"title":"views/settings/channelAccount/details/index-page-view","imgsrc":"img/1.png","cont":"views/settings/channelAccount/details/index-page-view里面Onshow()的时候","chlidimgsrc":["img/21.png"],"childarr":[
+				{"cont":"self.getAllChannels()调取Channel/ResumeSearch/GetAllChannels接口获取所有渠道。"},
+				{"cont":"通过判断是新建、详情、编辑决定实体化那个视图。"},
+				{"cont":"新建对应的是views/settings/channelAccount/details/account-info-add-view视图。实例的时候吧渠道信息传递下去。通过this.accountInfoRegion.show()渲染视图。"} 						
+				]},
+				{"title":"views/settings/channelAccount/details/account-info-add-view","imgsrc":"img/2.png","cont":"account-info-add-view在 onshow的时候实体化channel-form-view","chlidimgsrc":["img/221.png","img/222.png"],"childarr":[
+				{"cont":"吧渠道信息,以及是否是新建传递下去"},
+				{"cont":"点击确定按钮的时候触发channel-form-view里formSubmit()保存新建事件"},
+				{"cont":"监听channel-form-view里的onSaveSuccessfully"}
+				
+				]},
+				{"title":"views/common/exchannel/channel-form/channel-form-view","imgsrc":"img/3.png","cont":"channel-form-view在initialize的时候判断是new(新建)的话实体化views/common/exchannel/channel-form/channel-picker-view","chlidimgsrc":["img/31.png"],"childarr":[			
+				{"cont":"吧配置文件里的每一个对象根据自身的filedName去新增一个itemViewClasss属性"},
+				{"cont":"吧渠道信息,以及默认的配置文件传递下去"},
+				{"cont":"实例化form-view,吧选中的type对应的新增了itemviewClass属性的默认文件的对象传递下去"},
+				{"cont":"监听self.listenTo(self.channelPickerView, 'channelChanged', self.refreshChannelView)"},
+				{"cont":"self.refreshChannelView根据取选中的渠道对应的字段配置重置form-view，以及channel-picker-view的视图渲染"}
+				]},
+				{"title":"views/common/exchannel/channel-form/channel-picker-view","imgsrc":"img/41.png","cont":"channel-picker-view在initialize的时候实体化views/common/exchannel/form/form-view并给他传itemViewClass:searchList，跟itemViewClass:''","chlidimgsrc":["img/4.png"],"childarr":[			
+				{"cont":"监听form-view的optionChannged的事件self.listenTo( self.formView, 'optionChanged', self.channelChanged );self.channelChanged去触发父视图的channelChanged事件并把选中的渠道对应字段传过去"},
+				{"cont":"channel-picker-view在onshow()的时候this.$el.append( this.formView.render().$el );"}			
+				]},
+				{"title":"views/common/exchannel/form/form-view","imgsrc":"img/51.png","cont":"form-view在initialize的时候定义collection,通过self.getFormatFieldsConfig()吧传入的参数以self.getModelClass(),定义好的new model的形式赋值给collection","chlidimgsrc":["img/5.png","img/52.png","img/53.png"],"childarr":[
+				{"cont":"form-view在initialize的时候定义collection,通过self.getFormatFieldsConfig()吧传入的参数以self.getModelClass(),定义好的new model的形式赋值给collection"},
+				{"cont":"监听子视图的全都事件，子视图将触发自己的对应事件"},
+				{"cont":"添加了一些addField增加子视图，delField移除子视图，resetFields重置视图的方法"},
+				]},
+				{"title":"views/common/exchannel/form/field-item/field-item-view","imgsrc":"img/61.png","cont":"初始化的时候新建一个对象，键名对应的是itemviewClass设定的值，右边的是对应的视图","chlidimgsrc":["img/62.png","img/63.png"],"childarr":[
+				{"cont":"this.collection()里面没一项里的itemViewClass对应的值来渲染出对应的视图"},
+				{"cont":"监听视图里面的custom:events，来触发父视图里的对应的所有子事件加上custom:events"},
+				]},
+				]
+				this.k =parseInt(this.items.length/this.num)+1
+			}			
+		})
+		window.onresize = function () {Vm.rest()}
+		
+		
+		
+	</script>
+	
+</html>

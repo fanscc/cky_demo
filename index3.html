@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/vue.js" ></script>
+	</head>
+	<body>
+		<div id='app'>
+			<p v-for="item in nameNum">{{item.name}}</p>
+			<button @click="num++">点击+</button>
+			<div>{{num}}</div>
+		</div>
+	</body>
+	<script>
+		var Vm= new Vue({
+			el: '#app',
+			data: {
+				num:5,
+				arr: [
+				{"name":'111'},
+				{"name":'12'},
+				{"name":'13'},
+				{"name":'141'},
+				{"name":'15'},
+				{"name":'16'},
+				{"name":'17'},
+				{"name":'18'},
+				{"name":'19'},
+				{"name":'20'},
+				{"name":'21'},
+				{"name":'22'},
+				{"name":'23'}
+				
+				]
+			},
+			computed:{
+				nameNum: function(){
+					return this.arr.slice(0,this.num).filter(function(item){
+						return item.name.indexOf("111") == -1
+					}).sort(function(x,y){return x.name-y.name})
+				}
+				
+			}
+			
+		})
+		
+		
+	</script>
+</html>

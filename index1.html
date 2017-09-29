@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/js1.js" ></script>
+		<script type="text/javascript" src="js/qrcode.js" ></script>
+	</head>
+	<body>
+		<div id="qrcodee"></div>
+		<img src="img/1.png"/ id="code" style='display: none;'>
+	</body>
+	<script>
+		$("#qrcodee").qrcode({
+			  render: 'canvas',
+			  backgroud:"#fff",
+                text:'https://maimai.cn/oauth_login?appid=25200001&cusdata=xxxxx',
+             	label: '22',
+				mPosX:0.5,			
+				mPosY:0.5,			
+				mSize:0.11,			
+				minVersion:6,			
+				mode:2,					
+				quiet:1,		
+				radius:0.5,			
+
+				size:250,
+				fontcolor:"#ff9818",
+				fill:"#333",
+				mode: 4,
+	            mSize: 0.3,
+	            mPosX: 50 * 0.01,
+	            mPosY: 50 * 0.01,
+				image: $("#code")[0]
+		})
+		 
+				
+			
+			
+			
+		
+		
+	</script>
+</html>
